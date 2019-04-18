@@ -3,9 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.BenchmarkWorker", "Microsoft.Azure.Functions.BenchmarkWorker\Microsoft.Azure.Functions.BenchmarkWorker.csproj", "{C9E64ED0-8778-4539-A999-DD0548E2B8CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.Functions.BenchmarkWorker", "Microsoft.Azure.Functions.BenchmarkWorker\Microsoft.Azure.Functions.BenchmarkWorker.csproj", "{C9E64ED0-8778-4539-A999-DD0548E2B8CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Rpc.Messages", "Microsoft.Azure.Functions.Rpc.Messages\Microsoft.Azure.Functions.Rpc.Messages.csproj", "{68F2C40C-C2A0-4019-A2FB-CC750746BBE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.Functions.Rpc.Messages", "Microsoft.Azure.Functions.Rpc.Messages\Microsoft.Azure.Functions.Rpc.Messages.csproj", "{68F2C40C-C2A0-4019-A2FB-CC750746BBE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{BA70DE39-291F-435F-9005-08A344A5BF9E}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\host.json = ..\sample\host.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpTrigger", "HttpTrigger", "{4F87C038-D970-43DE-9229-D78D2FDB03D8}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\HttpTrigger\function.json = ..\sample\HttpTrigger\function.json
+		..\sample\HttpTrigger\run.bml = ..\sample\HttpTrigger\run.bml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +35,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4F87C038-D970-43DE-9229-D78D2FDB03D8} = {BA70DE39-291F-435F-9005-08A344A5BF9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAC2FEC2-72CD-4EEE-AF8A-80346E01072A}

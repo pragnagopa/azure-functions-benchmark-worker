@@ -8,7 +8,7 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
 {
     class Program
     {
-        static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             WorkerArguments arguments = null;
             Parser.Default.ParseArguments<WorkerArguments>(args)
@@ -16,7 +16,10 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
                 .WithNotParsed(err => Environment.Exit(1));
             Channel channel = new Channel(arguments.Host, arguments.Port, ChannelCredentials.Insecure);
             var client = new FunctionRpcClient(new FunctionRpc.FunctionRpcClient(channel), arguments.WorkerId);
-            Task rpcStream = client.RpcStream();
+            client.RpcStream();
+            var writerTask = client.RpcStreamWriter();
+            var readerTask = client.RpcStreamReader();
+            await Task.WhenAll(writerTask, readerTask);
             Console.WriteLine("Hello World!");
         }
     }

@@ -27,6 +27,7 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
         private ConcurrentBag<StreamingMessage> invokeRes = new ConcurrentBag<StreamingMessage>();
         private BlockingCollection<StreamingMessage> _blockingCollectionQueue = new BlockingCollection<StreamingMessage>();
         private readonly AsyncDuplexStreamingCall<StreamingMessage, StreamingMessage> _call;
+        IClientStreamWriter<StreamingMessage> _requestStream;
 
         public FunctionRpcClient(FunctionRpc.FunctionRpcClient client, string workerId)
         {
@@ -89,13 +90,13 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
             return response;
         }
 
-        internal Task<StreamingMessage> WorkerInitRequestHandler(StreamingMessage request)
+        internal void WorkerInitRequestHandler(StreamingMessage request)
         {
             StreamingMessage response = NewStreamingMessageTemplate(
                 request.RequestId,
                 StreamingMessage.ContentOneofCase.WorkerInitResponse,
                 out StatusResult status);
-            return Task.FromResult(response);
+            _blockingCollectionQueue.Add(response);
         }
 
         internal Task<StreamingMessage> WorkerTerminateRequest(StreamingMessage request)
@@ -103,7 +104,7 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
             return null;
         }
 
-        internal Task<StreamingMessage> FunctionLoadRequestHandler(StreamingMessage request)
+        internal void FunctionLoadRequestHandler(StreamingMessage request)
         {
             FunctionLoadRequest functionLoadRequest = request.FunctionLoadRequest;
 
@@ -112,7 +113,7 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
                 StreamingMessage.ContentOneofCase.FunctionLoadResponse,
                 out StatusResult status);
             response.FunctionLoadResponse.FunctionId = functionLoadRequest.FunctionId;
-            return Task.FromResult(response);
+            _blockingCollectionQueue.Add(response);
         }
 
         internal void InvocationRequestHandler(StreamingMessage request)
@@ -134,14 +135,13 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
             _blockingCollectionQueue.Add(response);
         }
 
-        internal Task<StreamingMessage> FunctionEnvironmentReloadRequestHandler(StreamingMessage request)
+        internal void FunctionEnvironmentReloadRequestHandler(StreamingMessage request)
         {
             StreamingMessage response = NewStreamingMessageTemplate(
                 request.RequestId,
                 StreamingMessage.ContentOneofCase.FunctionEnvironmentReloadResponse,
                 out StatusResult status);
-
-            return Task.FromResult(response);
+            _blockingCollectionQueue.Add(response);
         }
 
         internal StatusResult GetStatus()
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
             };
         }
 
-        public async Task RpcStream()
+        public void RpcStream()
         {
             StartStream str = new StartStream()
             {
@@ -162,23 +162,18 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
             {
                 StartStream = str
             };
-            await _call.RequestStream.WriteAsync(startStream);
-            var writerTask = RpcStreamWriter();
-            var readerTask = RpcStreamWriter();
-            await Task.WhenAll(writerTask, readerTask);
+            _blockingCollectionQueue.Add(startStream);
+            // await _call.RequestStream.WriteAsync(startStream);
+            _requestStream = _call.RequestStream;
         }
 
-        public Task RpcStreamReader()
+        public async Task RpcStreamReader()
         {
-            var responseReaderTask = Task.Run(async () =>
+            while (await _call.ResponseStream.MoveNext())
             {
-                while (await _call.ResponseStream.MoveNext())
-                {
-                    var serverMessage = _call.ResponseStream.Current;
-                    _eventManager.Publish(new InboundEvent(_workerId, serverMessage));
-                }
-            });
-            return responseReaderTask;
+                var serverMessage = _call.ResponseStream.Current;
+                _eventManager.Publish(new InboundEvent(_workerId, serverMessage));
+            }
         }
 
         public Task RpcStreamWriter()
