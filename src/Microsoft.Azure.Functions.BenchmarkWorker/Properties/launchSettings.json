@@ -2,7 +2,7 @@
   "profiles": {
     "Microsoft.Azure.Functions.BenchmarkWorker": {
       "commandName": "Project",
-      "commandLineArgs": " --host 127.0.0.1 --port 1625 --workerId 74d8f0ca-7ee2-44d2-82e8-5cdb56ed2609 --requestId 9eb4351d-5311-4559-b507-7841210a3cde --grpcMaxMessageLength 134217728"
+      "commandLineArgs": " --host 127.0.0.1 --port 28155 --workerId c8cb1d88-c885-457d-9527-9d1de3c1b645 --requestId 436d88c2-9688-4e7e-b660-c1ec361ad301 --grpcMaxMessageLength 134217728"
     }
   }
 }

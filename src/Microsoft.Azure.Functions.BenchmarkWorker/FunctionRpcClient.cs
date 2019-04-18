@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
             };
         }
 
-        public void RpcStream()
+        public async Task<bool> RpcStream()
         {
             StartStream str = new StartStream()
             {
@@ -162,9 +162,16 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
             {
                 StartStream = str
             };
-            _blockingCollectionQueue.Add(startStream);
-            // await _call.RequestStream.WriteAsync(startStream);
-            _requestStream = _call.RequestStream;
+            await _call.RequestStream.WriteAsync(startStream);
+            var consumer = Task.Run(async () =>
+            {
+                foreach (var rpcWriteMsg in _blockingCollectionQueue.GetConsumingEnumerable())
+                {
+                    await _call.RequestStream.WriteAsync(rpcWriteMsg);
+                }
+            });
+            await consumer;
+            return true;
         }
 
         public async Task RpcStreamReader()
@@ -174,18 +181,6 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
                 var serverMessage = _call.ResponseStream.Current;
                 _eventManager.Publish(new InboundEvent(_workerId, serverMessage));
             }
-        }
-
-        public Task RpcStreamWriter()
-        {
-            var consumer = Task.Run(async () =>
-            {
-                foreach (var rpcWriteMsg in _blockingCollectionQueue.GetConsumingEnumerable())
-                {
-                    await _call.RequestStream.WriteAsync(rpcWriteMsg);
-                }
-            });
-            return consumer;
         }
     }
 }
