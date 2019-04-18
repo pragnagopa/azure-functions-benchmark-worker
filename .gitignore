@@ -2,3 +2,5 @@
 /Microsoft.Azure.Functions.BenchmarkWorker/Microsoft.Azure.Functions.BenchmarkWorker/obj/Debug/*
 /Microsoft.Azure.Functions.BenchmarkWorker/Microsoft.Azure.Functions.BenchmarkWorker/obj/*
 /Microsoft.Azure.Functions.BenchmarkWorker/.vs/*
+/src/Microsoft.Azure.Functions.BenchmarkWorker/Microsoft.Azure.Functions.BenchmarkWorker/obj/*
+/src/Microsoft.Azure.Functions.BenchmarkWorker/.vs/*
