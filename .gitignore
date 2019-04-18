@@ -4,3 +4,9 @@
 /Microsoft.Azure.Functions.BenchmarkWorker/.vs/*
 /src/Microsoft.Azure.Functions.BenchmarkWorker/Microsoft.Azure.Functions.BenchmarkWorker/obj/*
 /src/Microsoft.Azure.Functions.BenchmarkWorker/.vs/*
+/src/.vs/Microsoft.Azure.Functions.BenchmarkWorker/v15/*
+/src/Microsoft.Azure.Functions.BenchmarkWorker/bin/*
+/src/Microsoft.Azure.Functions.BenchmarkWorker/obj/*
+/src/Microsoft.Azure.Functions.Rpc.Messages/Messages/*
+/src/Microsoft.Azure.Functions.Rpc.Messages/bin*
+/src/Microsoft.Azure.Functions.Rpc.Messages/obj/*
