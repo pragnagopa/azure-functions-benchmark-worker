@@ -123,7 +123,13 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
                     out StatusResult status);
 
             response.InvocationResponse.InvocationId = request.InvocationRequest.InvocationId;
-
+            RpcHttp rpcHttp = new RpcHttp()
+            {
+                StatusCode = "200"
+            };
+            TypedData typedData = new TypedData();
+            typedData.Http = rpcHttp;
+            response.InvocationResponse.ReturnValue = typedData;
 
             _blockingCollectionQueue.Add(response);
         }

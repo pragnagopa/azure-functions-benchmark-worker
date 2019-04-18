@@ -1,0 +1,8 @@
+{
+  "description": {
+    "language": "benchmark",
+    "extensions": [ ".bml" ],
+    "defaultExecutablePath": "dotnet",
+    "defaultWorkerPath": "Microsoft.Azure.Functions.BenchmarkWorker.dll"
+  }
+}

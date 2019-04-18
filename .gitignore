@@ -10,3 +10,4 @@
 /src/Microsoft.Azure.Functions.Rpc.Messages/Messages/*
 /src/Microsoft.Azure.Functions.Rpc.Messages/bin*
 /src/Microsoft.Azure.Functions.Rpc.Messages/obj/*
+/src/.vs/*
