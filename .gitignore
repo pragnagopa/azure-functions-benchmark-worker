@@ -1,0 +1,4 @@
+/Microsoft.Azure.Functions.BenchmarkWorker/Microsoft.Azure.Functions.Rpc.Messages/obj/*
+/Microsoft.Azure.Functions.BenchmarkWorker/Microsoft.Azure.Functions.BenchmarkWorker/obj/Debug/*
+/Microsoft.Azure.Functions.BenchmarkWorker/Microsoft.Azure.Functions.BenchmarkWorker/obj/*
+/Microsoft.Azure.Functions.BenchmarkWorker/.vs/*
