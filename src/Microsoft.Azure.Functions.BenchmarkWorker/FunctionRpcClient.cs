@@ -36,27 +36,21 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
             _workerId = workerId;
             _eventManager = new ScriptEventManager();
             _inboundWorkerEvents = _eventManager.OfType<InboundEvent>()
-                .ObserveOn(new NewThreadScheduler())
                 .Where(msg => msg.WorkerId == _workerId);
 
             _eventSubscriptions.Add(_inboundWorkerEvents.Where(msg => msg.MessageType == MsgType.InvocationRequest)
-                .ObserveOn(new NewThreadScheduler())
                 .Subscribe((msg) => InvocationRequestHandler(msg.Message)));
 
             _eventSubscriptions.Add(_inboundWorkerEvents.Where(msg => msg.MessageType == MsgType.WorkerInitRequest)
-                .ObserveOn(new NewThreadScheduler())
                 .Subscribe((msg) => WorkerInitRequestHandler(msg.Message)));
 
             _eventSubscriptions.Add(_inboundWorkerEvents.Where(msg => msg.MessageType == MsgType.WorkerTerminate)
-               .ObserveOn(new NewThreadScheduler())
                .Subscribe((msg) => WorkerTerminateRequest(msg.Message)));
 
             _eventSubscriptions.Add(_inboundWorkerEvents.Where(msg => msg.MessageType == MsgType.FunctionLoadRequest)
-               .ObserveOn(new NewThreadScheduler())
                .Subscribe((msg) => FunctionLoadRequestHandler(msg.Message)));
 
             _eventSubscriptions.Add(_inboundWorkerEvents.Where(msg => msg.MessageType == MsgType.FunctionEnvironmentReloadRequest)
-               .ObserveOn(new NewThreadScheduler())
                .Subscribe((msg) => FunctionEnvironmentReloadRequestHandler(msg.Message)));
         }
 

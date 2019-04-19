@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Functions.BenchmarkWorker
                 .WithNotParsed(err => Environment.Exit(1));
             Channel channel = new Channel(arguments.Host, arguments.Port, ChannelCredentials.Insecure);
             var client = new FunctionRpcClient(new FunctionRpc.FunctionRpcClient(channel), arguments.WorkerId);
-            var t = client.RpcStream();
+            var startAndWriter = client.RpcStream();
             var readerTask = client.RpcStreamReader();
-            await Task.WhenAll(t, readerTask);
+            await Task.WhenAll(startAndWriter, readerTask);
             Console.WriteLine("Hello World!");
         }
     }
