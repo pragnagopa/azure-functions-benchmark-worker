@@ -17,7 +17,7 @@
     </PackageReference>
   </ItemGroup>
 
-  <Target Name="GenerateProtoFiles" BeforeTargets="BeforeBuild" Inputs="azure-functions-language-worker-protobuf/src/proto/FunctionRpc.proto" Outputs="Messages/DotNet/FunctionRpc.cs;Messages/DotNet/FunctionRpcGrpc.cs">
+  <Target Name="GenerateProtoFiles" BeforeTargets="BeforeBuild" Inputs="protobuf/src/proto/FunctionRpc.proto" Outputs="Messages/DotNet/FunctionRpc.cs;Messages/DotNet/FunctionRpcGrpc.cs">
     <Exec Command="./generate_protos.bat" />
     <ItemGroup>
       <Compile Include="**/*$(DefaultLanguageSourceExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);$(BaseIntermediateOutputPath)**;$(BaseOutputPath)**;@(Compile)" />
